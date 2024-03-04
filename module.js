@@ -278,9 +278,10 @@ async function run(rawInput) {
 		gen.innerHTML = gen.innerHTML.replace(createImageRegex, loadingIcon);
 	
 	  const imagePath = await createImage(formatedImagePrompt);
-	
+		
 	  // Remove the loading icon and insert the actual image
 	  const imgElement = document.createElement('img');
+		gen.querySelector("#loading-logo").remove();
 	  imgElement.src = imagePath;
 	  imgElement.alt = 'AI Image';
 	  gen.firstChild.replaceWith(imgElement);
