@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Exo+2&display=swap");
 
-body *:not(#background *, .loading-container *) {
+body *:not(#background *, .loading-container *, #aiMessage *) {
   animation: fadeIn 0.5s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
