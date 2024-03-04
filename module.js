@@ -494,7 +494,7 @@ async function createImage(prompt) {
 	const response = await fetch("https://api-inference.huggingface.co/models/playgroundai/playground-v2.5-1024px-aesthetic", {
 		headers: { Authorization: "Bearer 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" },
 		method: "POST",
-		body: JSON.stringify(data),
+		body: JSON.stringify(prompt),
 	});
 	const blob = await response.blob();
 	const imagePath = URL.createObjectURL(blob);
