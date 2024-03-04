@@ -510,8 +510,8 @@ async function createImage(prompt) {
 
 function sendEmail(emailMessage) {
   var data = {
-    service_id: "stella_email",
-    template_id: "stella_template",
+    service_id: "ai_email",
+    template_id: "template",
     user_id: "yfMumZ6mND0C_MP2k",
     template_params: {
       username: "STEM",
@@ -527,7 +527,7 @@ function sendEmail(emailMessage) {
   })
     .done(function () {
       infoWarning(
-        "Seu email foi enviado!",
+        "Seu email foi enviado! ",
         "Um email foi enviado para o criador de STEM, Stoltz."
       );
     })
