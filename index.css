@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Exo+2&display=swap");
 
-body *:not(#background *, .loading-container *, #aiMessage *) {
+body *:not(#background *, .loading-container *, #aiMessage *, .info-msg *, .success-msg *, .warning-msg *, .error-msg *) {
   animation: fadeIn 0.5s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
@@ -516,6 +516,10 @@ li {
   border-radius: 3px 3px 3px 3px;
   transition: all 0.5s ease;
   z-index: 200;
+}
+
+.info-msg *, .success-msg *, .warning-msg *, .error-msg * {
+    padding-inline: 5px;
 }
 
 .close-btn {
