@@ -237,7 +237,7 @@ async function run(rawInput) {
         }
 
         // Extract the email content using a regular expression
-	const emailContentRegex = /!\[sendEmail\]\("([^"]+)"\)/g;
+	const emailContentRegex = /sendEmail\("([^"]+)"\)/g;
 	const emailContentMatches = gen.textContent.match(emailContentRegex);
 	
 	console.log(emailContentMatches);
