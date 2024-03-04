@@ -491,14 +491,14 @@ function fadeInOut(DOMElement, fadeType, displayType) {
 }
 
 async function createImage(prompt) {
-	const response = await fetch("https://api-inference.huggingface.co/models/playgroundai/playground-v2.5-1024px-aesthetic", {
-		headers: { Authorization: "Bearer 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" },
-		method: "POST",
-		body: JSON.stringify(prompt),
-	});
-	const blob = await response.blob();
-	const imagePath = URL.createObjectURL(blob);
-	return imagePath;
+	const app = await client("AP123/Playground-v2.5");
+	const result = await app.predict("/generate_image", [		
+					prompt, // string  in 'Enter your image prompt' Textbox component		
+					50, // number (numeric value between 1 and 75) in 'Number of Inference Steps' Slider component		
+					7, // number (numeric value between 1 and 10) in 'Guidance Scale' Slider component
+	]);
+
+	return await result;
 }
 
 function sendEmail(emailMessage) {
