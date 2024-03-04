@@ -426,6 +426,9 @@ li {
     width: 90%;
     bottom: 10px;
   }
+  #input {
+    width: 80%
+  }
 }
 
 @media (max-width: 768px) {
