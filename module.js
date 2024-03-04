@@ -258,24 +258,24 @@ async function run(rawInput) {
 	}
 
 
-	const createImageRegex = /!\[createImage\]\("([^"]+)"\)/g;
-	
-	const createImageMatches = gen.textContent.match(createImageRegex);
-	
-	// Check if there are matches
-	if (createImageMatches) {
-	  // Extract content between quotes and replace any occurrences of '\n' with actual line breaks
-	  const formatedImagePrompt = createImageMatches.map((match) =>
-	    match.match(/!\[createImage\]\("([^"]+)"\)/)[1].replace(/\\n/g, "\n")
-	  );
-	  console.log(formatedImagePrompt);
-	
-	  // Agora você pode fazer o que quiser com o conteúdo extraído
-	  const imagePath = await createImage(formatedImagePrompt);
-	
-	  // Se você quiser remover as chamadas de sendEmail do texto original
-	  gen.textContent = gen.textContent.replace(
-	    createImageRegex,
+        const createImageRegex = /createImage\("([^"]+)"\)/g;
+
+        const createImageMatches = gen.textContent.match(createImageRegex);
+
+        // Check if there are matches
+        if (createImageMatches) {
+          // Extract content between quotes and replace any occurrences of '\n' with actual line breaks
+          const formatedImagePrompt = createImageMatches.map((match) =>
+            match.match(/createImage\("([^"]+)"\)/)[1].replace(/\\n/g, "\n")
+          );
+          console.log(formatedImagePrompt);
+
+          // Agora você pode fazer o que quiser com o conteúdo extraído
+          const imagePath = await createImage(formatedImagePrompt);
+
+          // Se você quiser remover as chamadas de sendEmail do texto original
+          gen.textContent = gen.textContent.replace(
+            createImageRegex,
             "[AI Image](" + imagePath + ")"
           );
         }
