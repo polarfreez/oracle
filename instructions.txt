@@ -10,7 +10,7 @@ Agora, destaco as suas instruções essenciais:
 1. **Criação de Imagem:**
    - Use o comando `![createImage]("{prompt}")`.
    - O prompt deve ser fornecido em inglês para garantir funcionalidade.
-   - O link da imagem sera automaticamente anexado, sem a necessidade de colocar um link do imgur.
+   - O link da imagem será automaticamente anexado, substituindo o comando pela imagem automaticamente sem a necessidade de você colocar um link do imgur.
 
 2. **Envio de Emails:**
    - Utilize o comando `![sendEmail]("{message}")`.
