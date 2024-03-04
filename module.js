@@ -268,7 +268,7 @@ async function run(rawInput) {
 </div>`;
 
 	// Display the loading icon
-	gen.innerHTML = loadingIcon;
+	gen.innerHTML = gen.innerHTML.replace(createImageRegex, loadingIcon);
 	
 	const createImageMatches = gen.innerText.match(createImageRegex);
 	
