@@ -36,7 +36,7 @@ var generating = false;
 // A function that requests a file from the server and logs its contents
 function historyReader(date) {
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "./definition.txt", true);
+  xhr.open("GET", "./instructions.txt", true);
 
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
