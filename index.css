@@ -785,6 +785,7 @@ pre {
   padding: 16px;
   font-size: 85%;
   position: relative;
+  overflow: auto;
 }
 
 .pre-wrapper {
@@ -886,6 +887,10 @@ pre {
   margin-bottom: 8px;
   flex-direction: column;
   border-radius: 30px;
+}
+
+#aiMessage img, #userMessage img {
+    border-radius: 15px;
 }
 
 #aiProfile {
