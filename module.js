@@ -286,7 +286,6 @@ async function run(rawInput) {
 	    `<img src="${imagePath}" alt="AI Image" />`
 	  );
 	}
-        }
 
         setTimeout(() => {
           fadeInOut(gen, "fadeIn", "flex");
