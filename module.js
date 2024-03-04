@@ -266,11 +266,11 @@ async function run(rawInput) {
 ]]></style>
 <g id="ecznbdgItRN2_to" transform="translate(472.728571,165.153774)"><g id="ecznbdgItRN2_tr" transform="rotate(0)"><path d="M804.33,117.8l-74.11,74.19q-.95.96-2.39.96h-511.35c-.922092.00024-1.80348-.363108-2.45-1.01l-73.89-74.03c-.754098-.756046-.758568-1.976215-.01-2.73l73.88-74.12c.780946-.787328,1.842947-1.230128,2.95-1.23l510.35-.01c1.157916-.000156,2.270234.46421,3.09,1.29q34.75,34.72,72.07,72.17q1.19,1.2,2,2.24c.533042.687158.473108,1.66322-.14,2.28Z" transform="translate(-472.202316,-116.385002)" fill="#fff"/></g></g><g id="ecznbdgItRN3_to" transform="translate(238.674017,568.40546)"><g id="ecznbdgItRN3_tr" transform="rotate(0)"><path d="M300.14,779.13C214.91,632.33,129.82,485.44,44.69,338.58q-1.07-1.85-.96-3.45.13-1.77.61-3.56q12.9-48.15,26.32-98.62c.205483-.781646.917387-1.324834,1.73-1.32q1.15.01,2.31.32q49.89,13.37,99.26,26.45c1.107878.294561,2.056493,1.016802,2.64,2.01Q304.34,480.69,432.38,701.59q1.2,2.07.58,4.38-12.57,46.99-25.19,94.27-.9,3.36-1.82,6.36-.41,1.32-1.76.97L302.12,780.64c-.831518-.217033-1.544214-.760554-1.98-1.51Z" transform="translate(-238.445469,-519.636688)" fill="#fff"/></g></g><g id="ecznbdgItRN4_to" transform="translate(511.220095,856.404623)"><g id="ecznbdgItRN4_tr" transform="rotate(0)"><path d="M512.51,700.18c84.66-145.9,169.53-292.5,254.55-438.66q1.36-2.33,3.75-2.97q50.2-13.34,100.41-26.7c.551979-.147061,1.139522-.069438,1.632949.215737s.852172.754455.997051,1.304263l26.83,100.77c.288195,1.075698.137053,2.220056-.42,3.18L643.73,779.61q-.59,1.02-1.74,1.32L540.61,807.67q-2.03.54-2.57-1.49-13.68-51.26-26.85-100.56c-.6-2.26.24-3.59,1.32-5.44Z" transform="translate(-510.991547,-807.781982)" fill="#fff"/></g></g></svg>
 </div>`;
-	
+
 	// Display the loading icon
 	gen.innerHTML = loadingIcon;
 	
-	const createImageMatches = gen.textContent.match(createImageRegex);
+	const createImageMatches = gen.innerText.match(createImageRegex);
 	
 	if (createImageMatches) {
 	  const formatedImagePrompt = createImageMatches.map((match) =>
@@ -281,10 +281,10 @@ async function run(rawInput) {
 	  const imagePath = await createImage(formatedImagePrompt);
 	
 	  // Remove the loading icon and insert the actual image
-	  gen.textContent = gen.textContent.replace(
-	    loadingIcon,
-	    `<img src="${imagePath}" alt="AI Image" />`
-	  );
+	  const imgElement = document.createElement('img');
+	  imgElement.src = imagePath;
+	  imgElement.alt = 'AI Image';
+	  gen.firstChild.replaceWith(imgElement);
 	}
 
         setTimeout(() => {
@@ -498,23 +498,31 @@ function fadeInOut(DOMElement, fadeType, displayType) {
 }
 
 async function createImage(prompt) {
-	const app = await client("multimodalart/stable-cascade");
-	const result = await app.predict("/run", [		
-					prompt, // string  in 'Prompt' Textbox component		
-					"Hello!!", // string  in 'Negative prompt' Textbox component		
-					Math.random() * 2147483646 + 1, // number (numeric value between 0 and 2147483647) in 'Seed' Slider component		
-					1024, // number (numeric value between 1024 and 1536) in 'Width' Slider component		
-					1024, // number (numeric value between 1024 and 1536) in 'Height' Slider component		
-					20, // number (numeric value between 10 and 30) in 'Prior Inference Steps' Slider component		
-					4, // number (numeric value between 0 and 20) in 'Prior Guidance Scale' Slider component		
-					4, // number (numeric value between 4 and 12) in 'Decoder Inference Steps' Slider component		
-					0, // number (numeric value between 0 and 0) in 'Decoder Guidance Scale' Slider component		
-					1, // number (numeric value between 1 and 2) in 'Number of Images' Slider component
-		]);
-	
-	console.log(result.data);
+  try {
+    const inputArguments = {
+      prompt,
+      negative_prompt: "Hello!!",
+      seed: Math.floor(Math.random() * 2147483646) + 1,
+      width: 1024,
+      height: 1024,
+      prior_inference_steps: 20,
+      prior_guidance_scale: 4,
+      decoder_inference_steps: 4,
+      decoder_guidance_scale: 0,
+      num_images: 1,
+    };
 
-	return result.data;
+    const app = await client("multimodalart/stable-cascade");
+    const result = await app.predict("/run", [inputArguments]);
+
+    console.log(result.data);
+
+    return result.data;
+  } catch (error) {
+		errorWarning("Error in createImage function: ", error);
+    console.error("Error in createImage function:", error);
+    return null;
+  }
 }
 
 function sendEmail(emailMessage) {
