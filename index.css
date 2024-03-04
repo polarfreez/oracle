@@ -91,7 +91,6 @@ strong,
   border-radius: 30px;
   display: flex;
   align-items: center;
-  overflow: auto;
   max-height: 95%;
 }
 
