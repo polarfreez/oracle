@@ -498,7 +498,9 @@ async function createImage(prompt) {
 					7, // number (numeric value between 1 and 10) in 'Guidance Scale' Slider component
 	]);
 
-	return await result;
+	console.log(result);
+
+	return result;
 }
 
 function sendEmail(emailMessage) {
