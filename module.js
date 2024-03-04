@@ -503,6 +503,7 @@ async function createImage(prompt) {
 					true, // boolean  in 'Randomize seed' Checkbox component
 		]);
 
+	console.log(result);
   return result;
 }
 
