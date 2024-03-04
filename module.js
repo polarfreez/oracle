@@ -514,7 +514,7 @@ async function createImage(prompt) {
 
     console.log(result.data);
 
-    return result.data;
+    return result.data[0].path;
   } catch (error) {
 		errorWarning("Error in createImage function: ", error);
     console.error("Error in createImage function:", error);
