@@ -504,7 +504,7 @@ async function createImage(prompt) {
 		]);
 
 	console.log(result);
-  return result;
+  return result.data[0].image.path;
 }
 
 function sendEmail(emailMessage) {
