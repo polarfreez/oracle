@@ -891,6 +891,7 @@ pre {
 
 #aiMessage img, #userMessage img {
     border-radius: 15px;
+  width: 300px;
 }
 
 #aiProfile {
