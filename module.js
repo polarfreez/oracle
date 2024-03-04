@@ -503,8 +503,8 @@ async function createImage(prompt) {
 					true, // boolean  in 'Randomize seed' Checkbox component
 		]);
 
-	console.log(result);
-  return result.data[0].image.path;
+	console.log(result.data[0].image.path);
+  return await result.data[0].image.path;
 }
 
 function sendEmail(emailMessage) {
