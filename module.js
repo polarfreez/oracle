@@ -32,6 +32,17 @@ const marked = new Marked(
 let history = "";
 var formatedDate;
 var generating = false;
+const uploadContainer = document.querySelector('.upload-container')
+const fileInput = document.getElementById('file-upload');
+const fileNameSpan = document.querySelector('.file-name');
+const fileUploadButton = document.querySelector('.upload-button');
+const fileContentIcon = document.querySelector('.file-icon')
+const removeButton = document.querySelector('.remove-icon');
+
+let attachedFileName = '';
+
+var isFileOnChat = false;
+var textFileContent = '';
 
 // A function that requests a file from the server and logs its contents
 function historyReader(date) {
@@ -48,6 +59,13 @@ function historyReader(date) {
   xhr.send();
 }
 window.onload = function () {
+  fileInput.value = '';
+  fileNameSpan.textContent = '';
+  fileNameSpan.parentElement.style.display = 'none';
+  removeButton.style.display = 'none';
+  fileContentIcon.style.display = 'none';
+  history = history.replace(textFileContent, '');
+
   const timeZone = "America/Sao_Paulo"; // 'America/Sao_Paulo' corresponds to GMT-3
   const locale = "pt-BR";
 
@@ -135,7 +153,7 @@ var messageIndex = 0;
 
 async function run(rawInput) {
   const controller = new AbortController();
-  const message = "<|im_start|>user\n{:}<|im_end|>\n<|im_start|>assistant\n";
+  const message = "<|im_start|>user\n{:}<|im_end|>\n\n<|im_start|>assistant\n";
   const input = message.replace("{:}", rawInput);
   const token = "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";
   const hf = new HfInference(token);
@@ -402,6 +420,7 @@ async function run(rawInput) {
 
 $("#clearHistory").bind("click", function () {
   historyReader(formatedDate);
+  cleanFileInput();
   let historyElement = document.querySelector("#history");
   infoWarning("Chat resetado!", "O histórico dessa conversa foi limpo!");
   historyElement.style.animation = "fadeOut 0.5s ease-in-out forwards";
@@ -456,7 +475,16 @@ document.addEventListener("keydown", function (event) {
       historyMessageGroup.appendChild(userMessageElement);
       historyMessageGroup.appendChild(userProfileElement);
 
+        if(isFileOnChat){
+          const filePopUp = document.createElement("div");
+          filePopUp.id = "file-pop-up";
 
+          filePopUp.innerHTML = `<div class="file-info"><svg class="file-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/></svg><span class="file-name-attached"></span></div>`;
+          filePopUp.querySelector(".file-name-attached").textContent = attachedFileName;
+          filePopUp.querySelector(".file-info").style.bottom = '0';
+          filePopUp.querySelector(".file-info").style.right = '0';
+          userMessageElement.appendChild(filePopUp);
+        }
 
         historyMessageGroup.appendChild(aiMessageElement);
         historyMessageGroup.appendChild(aiProfileElement);
@@ -472,6 +500,7 @@ document.addEventListener("keydown", function (event) {
 
       inputElement.innerHTML = "";
       run(inputValue);
+      cleanFileInput();
     }
   } else if (
     isEnterPressed &&
@@ -551,50 +580,40 @@ function sendEmail(emailMessage) {
     });
 }
 
+fileInput.addEventListener('change', (event) => {
+  const file = event.target.files[0];
+  const reader = new FileReader();
 
-const imageUpload = document.getElementById('image-upload');
-const imageWrapper = document.querySelector('.image-wrapper');
-const uploadedImage = document.getElementById('uploaded-image');
+  reader.onload = () => {
+    history += "<|im_start|>attached_document_by_user\n" + reader.result + "<|im_end|>";
+    textFileContent = reader.result;
+    console.log('File content:', history);
+    fileNameSpan.textContent = file.name;
+    fileNameSpan.parentElement.style.display = 'flex';
+    removeButton.style.display = 'flex';
+    fileContentIcon.style.display = 'flex';
+    fileUploadButton.style.display = 'none';
+    uploadContainer.style.zIndex = '-20';
+    isFileOnChat = true;
+    attachedFileName = file.name;
+    
+    // Do something with the file content (history variable)
+  };
 
-imageUpload.addEventListener('change', async function() {
-  const file = this.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function() {
-      const imageBlob = reader.result;
-      console.log('Base64 data:', imageBlob); // Log the Base64 data
-      const blob = new Blob([imageBlob], { type: 'image/png' }); // Adjust MIME type if needed
-      const imageFile = new File([blob], 'my_image.png', { type: 'image/png' }); // Specify file name and type
-      const localObjectURL = URL.createObjectURL(imageFile);
-
-      // Call your function with the local object URL
-      describeImage(localObjectURL).then((response) => {
-        console.log(JSON.stringify(response));
-        // Handle the response data as needed
-      });
-    };
-    reader.readAsDataURL(file);
-  }
+  reader.readAsText(file);
 });
 
+removeButton.addEventListener('click', () => {
+  cleanFileInput();
+});
 
-function removeImage() {
-  uploadedImage.src = '';
-  imagePath = '';
-  imageWrapper.style.display = 'none';
-  imageUpload.value = '';
-}
-
-async function describeImage(imageURL) {
-  console.log(imageURL);
-	const response = await fetch(
-		"https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-large",
-		{
-			headers: { Authorization: "Bearer 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" },
-			method: "POST",
-			body: imageURL,
-		}
-	);
-	const result = await response.json();
-	return result;
+function cleanFileInput(){
+  fileInput.value = '';
+  fileNameSpan.textContent = '';
+  fileNameSpan.parentElement.style.display = 'none';
+  removeButton.style.display = 'none';
+  fileContentIcon.style.display = 'none';
+  fileUploadButton.style.display = 'flex';
+  uploadContainer.style.zIndex = '0';
+  isFileOnChat = false;
 }
