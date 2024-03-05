@@ -551,14 +551,40 @@ function sendEmail(emailMessage) {
     });
 }
 
-async function chat(prompt){
-	const app = await client("https://qwen-qwen1-5-72b-chat.hf.space/--replicas/2o2ps/");
-	const result = await app.predict("/model_chat", [		
-					prompt, // string  in 'Input' Textbox component		
-					[["",null]], // undefined  in 'Qwen1.5-72B-Chat' Chatbot component		
-					"", // string  in 'parameter_9' Textbox component
-		]);
 
-	return result.data;
+const imageUpload = document.getElementById('image-upload');
+const imageWrapper = document.querySelector('.image-wrapper');
+const uploadedImage = document.getElementById('uploaded-image');
+let imagePath = '';
 
+imageUpload.addEventListener('change', async function() {
+  const file = this.files[0];
+  if (file) {
+    const filePathUrl = URL.createObjectURL(file);
+    // Call your function and pass the filePathUrl as an argument
+    describeImage(filePathUrl);
+  }
+});
+
+function removeImage() {
+  uploadedImage.src = '';
+  imagePath = '';
+  imageWrapper.style.display = 'none';
+  imageUpload.value = '';
+}
+
+async function describeImage(imageURL) {
+  console.log(imageURL);
+  const app = await client("visheratin/mc-llava-3b");
+  const result = await app.predict("/answer_question_1", [
+          imageURL, 	// blob in 'Upload or Drag an Image' Image component		
+          "Describe the image in great detail.", // string  in 'Question' Textbox component		
+          0, // number (numeric value between 0 and 200) in 'Max crops' Slider component		
+          728, // number (numeric value between 728 and 2184) in 'Number of image tokens' Slider component		
+          true, // boolean  in 'Sample' Checkbox component		
+          0, // number (numeric value between 0 and 1) in 'Temperature' Slider component		
+          0, // number (numeric value between 0 and 50) in 'Top-K' Slider component
+    ]);
+
+  console.log(result.data);
 }
