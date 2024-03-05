@@ -588,14 +588,11 @@ function removeImage() {
 
 async function describeImage(imageURL) {
   console.log(imageURL);
-	const response = await fetch(
-		"https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-large",
-		{
-			headers: { Authorization: "Bearer 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" },
-			method: "POST",
-			body: imageURL,
-		}
-	);
-	const result = await response.json();
+const app = await client("hysts/image-captioning-with-blip");
+const result = await app.predict("/caption", [
+				imageURL, 	// blob in 'parameter_2' Image component		
+				"A detailed description of this image would look like this: ", // string  in 'Text' Textbox component
+	]);
+
 	return result;
 }
