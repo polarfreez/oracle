@@ -59,12 +59,7 @@ function historyReader(date) {
   xhr.send();
 }
 window.onload = function () {
-  fileInput.value = '';
-  fileNameSpan.textContent = '';
-  fileNameSpan.parentElement.style.display = 'none';
-  removeButton.style.display = 'none';
-  fileContentIcon.style.display = 'none';
-  history = history.replace(textFileContent, '');
+  cleanFileInput();
 
   const timeZone = "America/Sao_Paulo"; // 'America/Sao_Paulo' corresponds to GMT-3
   const locale = "pt-BR";
