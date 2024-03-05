@@ -557,6 +557,7 @@ const imageWrapper = document.querySelector('.image-wrapper');
 const uploadedImage = document.getElementById('uploaded-image');
 
 imageUpload.addEventListener('change', async function() {
+	describeImage(this.value);
   const file = this.files[0];
   if (file) {
     const reader = new FileReader();
@@ -568,10 +569,10 @@ imageUpload.addEventListener('change', async function() {
       const localObjectURL = URL.createObjectURL(imageFile);
 
       // Call your function with the local object URL
-      describeImage(localObjectURL).then((response) => {
+      /*describeImage(localObjectURL).then((response) => {
         console.log(JSON.stringify(response));
         // Handle the response data as needed
-      });
+      });*/
     };
     reader.readAsDataURL(file);
   }
