@@ -600,13 +600,37 @@ fileInput.addEventListener('change', (event) => {
     // Do something with the file content (history variable)
   };
 
+<<<<<<< HEAD
   reader.readAsText(file);
+=======
+imageUpload.addEventListener('change', async function() {
+	describeImage(this.value);
+  const file = this.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function() {
+      const imageBlob = reader.result;
+      console.log('Base64 data:', imageBlob); // Log the Base64 data
+      const blob = new Blob([imageBlob], { type: 'image/png' }); // Adjust MIME type if needed
+      const imageFile = new File([blob], 'my_image.png', { type: 'image/png' }); // Specify file name and type
+      const localObjectURL = URL.createObjectURL(imageFile);
+
+      // Call your function with the local object URL
+      /*describeImage(localObjectURL).then((response) => {
+        console.log(JSON.stringify(response));
+        // Handle the response data as needed
+      });*/
+    };
+    reader.readAsDataURL(file);
+  }
+>>>>>>> 74102f43539a750fe51d38cadff28960a5357cf9
 });
 
 removeButton.addEventListener('click', () => {
   cleanFileInput();
 });
 
+<<<<<<< HEAD
 function cleanFileInput(){
   fileInput.value = '';
   fileNameSpan.textContent = '';
@@ -617,3 +641,22 @@ function cleanFileInput(){
   uploadContainer.style.zIndex = '0';
   isFileOnChat = false;
 }
+=======
+function removeImage() {
+  uploadedImage.src = '';
+  imagePath = '';
+  imageWrapper.style.display = 'none';
+  imageUpload.value = '';
+}
+
+async function describeImage(imageURL) {
+  console.log(imageURL);
+const app = await client("hysts/image-captioning-with-blip");
+const result = await app.predict("/caption", [
+				imageURL, 	// blob in 'parameter_2' Image component		
+				"A detailed description of this image would look like this: ", // string  in 'Text' Textbox component
+	]);
+
+	return result;
+}
+>>>>>>> 74102f43539a750fe51d38cadff28960a5357cf9
