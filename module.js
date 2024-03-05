@@ -555,16 +555,28 @@ function sendEmail(emailMessage) {
 const imageUpload = document.getElementById('image-upload');
 const imageWrapper = document.querySelector('.image-wrapper');
 const uploadedImage = document.getElementById('uploaded-image');
-let imagePath = '';
 
 imageUpload.addEventListener('change', async function() {
   const file = this.files[0];
   if (file) {
-    const filePathUrl = URL.createObjectURL(file);
-    // Call your function and pass the filePathUrl as an argument
-    describeImage(filePathUrl);
+    const reader = new FileReader();
+    reader.onload = function() {
+      const imageBlob = reader.result;
+      console.log('Base64 data:', imageBlob); // Log the Base64 data
+      const blob = new Blob([imageBlob], { type: 'image/png' }); // Adjust MIME type if needed
+      const imageFile = new File([blob], 'my_image.png', { type: 'image/png' }); // Specify file name and type
+      const localObjectURL = URL.createObjectURL(imageFile);
+
+      // Call your function with the local object URL
+      describeImage(localObjectURL).then((response) => {
+        console.log(JSON.stringify(response));
+        // Handle the response data as needed
+      });
+    };
+    reader.readAsDataURL(file);
   }
 });
+
 
 function removeImage() {
   uploadedImage.src = '';
@@ -575,16 +587,14 @@ function removeImage() {
 
 async function describeImage(imageURL) {
   console.log(imageURL);
-  const app = await client("visheratin/mc-llava-3b");
-  const result = await app.predict("/answer_question_1", [
-          imageURL, 	// blob in 'Upload or Drag an Image' Image component		
-          "Describe the image in great detail.", // string  in 'Question' Textbox component		
-          0, // number (numeric value between 0 and 200) in 'Max crops' Slider component		
-          728, // number (numeric value between 728 and 2184) in 'Number of image tokens' Slider component		
-          true, // boolean  in 'Sample' Checkbox component		
-          0, // number (numeric value between 0 and 1) in 'Temperature' Slider component		
-          0, // number (numeric value between 0 and 50) in 'Top-K' Slider component
-    ]);
-
-  console.log(result.data);
+	const response = await fetch(
+		"https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-large",
+		{
+			headers: { Authorization: "Bearer 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" },
+			method: "POST",
+			body: imageURL,
+		}
+	);
+	const result = await response.json();
+	return result;
 }
