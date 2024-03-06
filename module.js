@@ -111,11 +111,18 @@ function getRandomDuration(value1, value2) {
 
 async function* textStreamRes(hf, controller, messages) {
 	const app = await client("https://dev0ps-argilla-notux-8x7b-v1.hf.space/--replicas/k3nom/");
-	const result = await app.predict("/predict", [		
-					messages, // string  in 'Input' Textbox component
-	]);
-
-	console.log(result.data);
+	let tokens = [];
+	
+  for (const message of messages) {
+    // check if the controller is aborted
+    if (controller.signal.aborted) {
+      break;
+    }
+    // use the app to predict the output
+    const output = await app.predict("/predict", [message]);
+    tokens.push(output);
+    yield tokens;
+  }
 }
 
 $("#confirmPassword").bind("click", function () {
