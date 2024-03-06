@@ -894,7 +894,7 @@ pre {
 }
 
 #aiProfile {
-  background: url(./images/core.png);
+  background: url(/ai-selector/media/core.png);
   content: "";
   width: 48px;
   height: 48px;
