@@ -95,23 +95,59 @@ function getRandomDuration(value1, value2) {
 }
 
 async function* textStreamRes(hf, controller, input) {
-  let tokens = [];
-  for await (const output of hf.textGenerationStream(
-    {
-      model: "NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO",
-      inputs: input,
-      parameters: { temperature: 0.9, top_p: 0.75, max_new_tokens: 2048 },
+  const requestBody = {
+    model: "mixtral-8x7b",
+    messages: messages,
+    temperature: 0.9,
+    top_p: 0.75,
+    max_tokens: 2048,
+    use_cache: false,
+    stream: true,
+  };
+
+  const response = await fetch('https://rafaaa2105-text-generation.hf.space/api/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-    {
-      use_cache: false,
-      signal: controller.signal,
+    body: JSON.stringify(requestBody),
+    signal: controller.signal,
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error ${response.status}`);
+  }
+
+  const reader = response.body.getReader();
+  let decoder = new TextDecoder('utf-8');
+  let tokens = [];
+
+  while (true) {
+    const { value, done } = await reader.read();
+
+    if (done) {
+      break;
     }
-  )) {
-    tokens.push(output);
-    yield tokens;
+
+    const chunk = decoder.decode(value, { stream: true });
+    const lines = chunk.split('\n');
+
+    for (const line of lines) {
+      if (line.startsWith('data:')) {
+        const data = JSON.parse(line.slice(6));
+        if (data.choices && data.choices.length > 0) {
+          const token = data.choices[0].delta.content;
+          if (token) {
+            tokens.push(token);
+            yield tokens;
+          }
+        }
+      }
+    }
   }
 
   console.log(await tokens);
+}
 }
 
 $("#confirmPassword").bind("click", function () {
@@ -148,42 +184,28 @@ var messageIndex = 0;
 
 async function run(rawInput) {
   const controller = new AbortController();
-  const message = "<|im_start|>user\n{:}<|im_end|>\n\n<|im_start|>assistant\n";
-  const input = message.replace("{:}", rawInput);
-  const token = "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";
+  const token = ""; // Replace this with your actual token, if needed
   const hf = new HfInference(token);
   let gen = document.querySelector(`#messageIndex${messageIndex} #aiMessage`);
   let loadingCircle = document.querySelector(".maskedCircle");
-  history += input;
+
+  history.push({ role: "user", content: rawInput }); // Add the user's input to the history
 
   gen.innerHTML = "";
   try {
     for await (const tokens of textStreamRes(hf, controller, history)) {
       const lastToken = tokens[tokens.length - 1];
-      const lastTokenFormated = lastToken.token.text;
-      gen.textContent += lastTokenFormated.replace("<|im_end|>", "");
-      history += lastTokenFormated;
+      gen.textContent += lastToken;
 
-      if (lastTokenFormated == "<|im_end|>") {
-        gen.innerHTML = marked.parse(gen.textContent);
-        let historyElement = document.querySelector("#history");
-        let historyMessageGroup = document.querySelector(
-          "#messageIndex" + messageIndex
-        );
-        let userProfileElement = document.createElement("div");
-
-
-        setTimeout(() => {
-          historyElement.lastElementChild.scrollIntoView({
-            behavior: "smooth",
-          });
-        }, 0);
-
-
-        if (gen.textContent.includes("END_OF_DIALOG")) {
-          gen.textContent = gen.textContent.replace("END_OF_DIALOG", "");
+      if (lastToken.startsWith("data:")) {
+        const data = JSON.parse(lastToken.slice(6));
+        if (data.choices && data.choices.length > 0) {
+          const assistantResponse = data.choices[0].delta.content;
+          if (assistantResponse) {
+            history.push({ role: "assistant", content: assistantResponse }); // Add the assistant's response to the history
+          }
         }
-
+      }
         // check if gen has any pre elements
         if (gen.querySelectorAll("pre").length > 0) {
           // get all the pre elements in gen
