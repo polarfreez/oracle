@@ -60,6 +60,7 @@ function historyReader(date) {
 }
 
 if(generating){
+	        let loadingCircle = document.querySelector(".maskedCircle");
 	let blinkValue = getRandomDuration(0, 1);
 
 	loadingCircle.style.animation = `color 0.3s linear forwards, glow 0.3s linear forwards`;
@@ -67,6 +68,7 @@ if(generating){
 
 	loadingCircle.style.transition = "all 0.1s linear";
 } else {
+	        let loadingCircle = document.querySelector(".maskedCircle");
 	loadingCircle.style.animation  =	"reverseColor 1s linear forwards, reverseGlow 1s linear forwards, blink 1s infinite linear";
 }
 
