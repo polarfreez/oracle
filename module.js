@@ -109,58 +109,27 @@ function getRandomDuration(value1, value2) {
 }
 
 async function* textStreamRes(hf, controller, messages) {
-  const requestBody = {
-    model: "mixtral-8x7b",
-    messages: messages,
-    temperature: 0.9,
-    top_p: 0.75,
-    max_tokens: 2048,
-    use_cache: false,
-    stream: true,
-  };
-
-  const response = await fetch('https://hansimov-hf-llm-api.hf.space/api/v1/chat/completion', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(requestBody),
-    signal: controller.signal,
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error ${response.status}`);
-  }
-
-  const reader = response.body.getReader();
-  let decoder = new TextDecoder('utf-8');
-  let tokens = [];
-
-  while (true) {
-    const { value, done } = await reader.read();
-
-    if (done) {
-      break;
-    }
-
-    const chunk = decoder.decode(value, { stream: true });
-    const lines = chunk.split('\n');
-
-    for (const line of lines) {
-      if (line.startsWith('data:')) {
-        const data = JSON.parse(line.slice(6));
-        if (data.choices && data.choices.length > 0) {
-          const token = data.choices[0].delta.content;
-          if (token) {
-            tokens.push(token);
-            yield tokens;
-          }
-        }
-      }
-    }
-  }
-
-  console.log(await tokens);
+$.ajax({
+  url: 'https://rafaaa2105-text-generation.hf.space/api/v1/chat/completions',
+  crossDomain: true,
+  method: 'post',
+  headers: {
+    'accept': 'application/json'
+  },
+  contentType: 'application/json',
+  // data: '{\n  "model": "mixtral-8x7b",\n  "messages": [\n    {\n      "role": "user",\n      "content": "Hello, who are you?"\n    }\n  ],\n  "temperature": 0.5,\n  "top_p": 0.95,\n  "max_tokens": -1,\n  "use_cache": false,\n  "stream": true\n}',
+  data: JSON.stringify({
+    'model': 'mixtral-8x7b',
+    'messages': messages,
+    'temperature': 0.5,
+    'top_p': 0.95,
+    'max_tokens': -1,
+    'use_cache': false,
+    'stream': true
+  })
+}).done(function(response) {
+  console.log(response);
+});
 }
 
 $("#confirmPassword").bind("click", function () {
