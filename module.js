@@ -52,7 +52,7 @@ function historyReader(date) {
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
       var fileContent = xhr.responseText;
-      history = fileContent;
+      history.push({ role: "system", content: fileContent });;
     }
   };
 
