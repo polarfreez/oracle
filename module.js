@@ -29,7 +29,7 @@ const marked = new Marked(
   })
 );
 
-let history = "";
+let history = [];
 var formatedDate;
 var generating = false;
 const uploadContainer = document.querySelector('.upload-container')
