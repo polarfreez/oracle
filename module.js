@@ -58,6 +58,18 @@ function historyReader(date) {
 
   xhr.send();
 }
+
+if(generating){
+	let blinkValue = getRandomDuration(0, 1);
+
+	loadingCircle.style.animation = `color 0.3s linear forwards, glow 0.3s linear forwards`;
+	loadingCircle.style.opacity = blinkValue;
+
+	loadingCircle.style.transition = "all 0.1s linear";
+} else {
+	loadingCircle.style.animation  =	"reverseColor 1s linear forwards, reverseGlow 1s linear forwards, blink 1s infinite linear";
+}
+
 window.onload = function () {
   cleanFileInput();
 
@@ -343,15 +355,7 @@ async function run(rawInput) {
         }, 500);
 
         messageIndex++;
-      } else {
-        let blinkValue = getRandomDuration(0, 1);
-
-        loadingCircle.style.animation = `color 0.3s linear forwards, glow 0.3s linear forwards`;
-        loadingCircle.style.opacity = blinkValue;
-
-        loadingCircle.style.transition = "all 0.1s linear";
       }
-    }
   } catch (e) {
     errorWarning("Um erro ocorreu!", e);
     console.log(e);
