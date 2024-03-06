@@ -95,23 +95,39 @@ function getRandomDuration(value1, value2) {
 }
 
 async function* textStreamRes(hf, controller, input) {
-  let tokens = [];
-  for await (const output of hf.textGenerationStream(
-    {
-      model: "NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO",
+// Fazer a solicitação à API do Hugging Face
+const response = await fetch(
+  "https://api-inference.huggingface.co/models/NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO",
+  {
+    headers: {
+      Authorization: "Bearer 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",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({
       inputs: input,
       parameters: { temperature: 0.9, top_p: 0.75, max_new_tokens: 2048 },
-    },
-    {
-      use_cache: false,
-      signal: controller.signal,
-    }
-  )) {
-    tokens.push(output);
-    yield tokens;
+      options: {
+        use_cache: false,
+        wait_for_model: true,
+      },
+    }),
+    signal: controller.signal,
   }
+);
 
-  console.log(await tokens);
+if (!response.ok) {
+  throw new Error(`HTTP error ${response.status}`);
+}
+
+const result = await response.json();
+
+// Processar o resultado do texto gerado
+let tokens = [];
+for await (const output of result) {
+  tokens.push(output);
+  yield tokens;
+}
 }
 
 $("#confirmPassword").bind("click", function () {
