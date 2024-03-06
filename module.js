@@ -108,7 +108,7 @@ function getRandomDuration(value1, value2) {
   }
 }
 
-async function* textStreamRes(hf, controller, input) {
+async function* textStreamRes(hf, controller, messages) {
   const requestBody = {
     model: "mixtral-8x7b",
     messages: messages,
