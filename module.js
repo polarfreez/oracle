@@ -114,7 +114,7 @@ async function* textStreamRes(hf, controller, messages) {
   for await (const output of hf.textGenerationStream(
     {
       model: "NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO",
-      inputs: input,
+      inputs: messages,
       parameters: { temperature: 0.9, top_p: 0.75, max_new_tokens: 2048 },
     },
     {
