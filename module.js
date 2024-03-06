@@ -110,12 +110,12 @@ function getRandomDuration(value1, value2) {
 }
 
 async function* textStreamRes(hf, controller, messages) {
-  // Create a pipeline for text generation
-  let pipe = await pipeline('text-generation', 'HuggingFaceH4/zephyr-7b-gemma-v0.1');
-  // Generate text from the messages array
-  let response = await pipe(messages);
-  // Handle the response object as you wish
-  console.log(response);
+	const app = await client("https://dev0ps-argilla-notux-8x7b-v1.hf.space/--replicas/k3nom/");
+	const result = await app.predict("/predict", [		
+					messages, // string  in 'Input' Textbox component
+	]);
+
+	console.log(result.data);
 }
 
 $("#confirmPassword").bind("click", function () {
