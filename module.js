@@ -148,7 +148,6 @@ async function* textStreamRes(hf, controller, input) {
 
   console.log(await tokens);
 }
-}
 
 $("#confirmPassword").bind("click", function () {
   confirmPassword(document.querySelector("#ttsPassword").value);
