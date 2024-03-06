@@ -972,7 +972,7 @@ pre {
   position: fixed;
   bottom: 4px;
   right: 48px;
-  display: inline-block;
+	display: none;
 }
 
 .upload-button {
