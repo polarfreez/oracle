@@ -110,19 +110,23 @@ function getRandomDuration(value1, value2) {
 }
 
 async function* textStreamRes(hf, controller, messages) {
-	const app = await client("https://dev0ps-argilla-notux-8x7b-v1.hf.space/--replicas/k3nom/");
-	let tokens = [];
-	
-  for (const message of messages) {
-    // check if the controller is aborted
-    if (controller.signal.aborted) {
-      break;
+  let tokens = [];
+  for await (const output of hf.textGenerationStream(
+    {
+      model: "NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO",
+      inputs: input,
+      parameters: { temperature: 0.9, top_p: 0.75, max_new_tokens: 2048 },
+    },
+    {
+      use_cache: false,
+      signal: controller.signal,
     }
-    // use the app to predict the output
-    const output = await app.predict("/predict", [message]);
+  )) {
     tokens.push(output);
     yield tokens;
   }
+
+  console.log(await tokens);
 }
 
 $("#confirmPassword").bind("click", function () {
