@@ -122,7 +122,8 @@ async function* textStreamRes(hf, controller, messages) {
   const response = await fetch('https://rafaaa2105-text-generation.hf.space/api/v1/chat/completions', {
     method: 'POST',
     headers: {
-			'Authorization': 'Bearer *',
+			'mode': 'no-cors',
+			'Authorization': 'Bearer paodeforma',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(requestBody),
