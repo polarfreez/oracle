@@ -355,7 +355,7 @@ async function run(rawInput) {
         }, 500);
 
         messageIndex++;
-      }
+      
   } catch (e) {
     errorWarning("Um erro ocorreu!", e);
     console.log(e);
