@@ -109,27 +109,12 @@ function getRandomDuration(value1, value2) {
 }
 
 async function* textStreamRes(hf, controller, messages) {
-$.ajax({
-  url: 'https://rafaaa2105-text-generation.hf.space/api/v1/chat/completions',
-  crossDomain: true,
-  method: 'post',
-  headers: {
-    'accept': 'application/json'
-  },
-  contentType: 'application/json',
-  // data: '{\n  "model": "mixtral-8x7b",\n  "messages": [\n    {\n      "role": "user",\n      "content": "Hello, who are you?"\n    }\n  ],\n  "temperature": 0.5,\n  "top_p": 0.95,\n  "max_tokens": -1,\n  "use_cache": false,\n  "stream": true\n}',
-  data: JSON.stringify({
-    'model': 'mixtral-8x7b',
-    'messages': messages,
-    'temperature': 0.5,
-    'top_p': 0.95,
-    'max_tokens': -1,
-    'use_cache': false,
-    'stream': true
-  })
-}).done(function(response) {
+  // Create a pipeline for text generation
+  let pipe = await pipeline('text-generation', 'mixtral-8x7b');
+  // Generate text from the messages array
+  let response = await pipe(messages);
+  // Handle the response object as you wish
   console.log(response);
-});
 }
 
 $("#confirmPassword").bind("click", function () {
