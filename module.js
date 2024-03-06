@@ -9,6 +9,7 @@ import { errorWarning } from "./index.js";
 import { enableTTS } from "./index.js";
 import { client } from "https://cdn.jsdelivr.net/npm/@gradio/client@0.12.1/+esm";
 import { AutoTokenizer } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.15.1';
+import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.15.1';
 
 import { Marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 
