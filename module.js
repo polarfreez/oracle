@@ -111,7 +111,7 @@ function getRandomDuration(value1, value2) {
 
 async function* textStreamRes(hf, controller, messages) {
   // Create a pipeline for text generation
-  let pipe = await pipeline('text-generation', 'mixtral-8x7b');
+  let pipe = await pipeline('text-generation', 'HuggingFaceH4/zephyr-7b-gemma-v0.1');
   // Generate text from the messages array
   let response = await pipe(messages);
   // Handle the response object as you wish
