@@ -471,7 +471,7 @@ function sendEmail(emailMessage) {
     template_id: "template",
     user_id: "yfMumZ6mND0C_MP2k",
     template_params: {
-      username: "STEM",
+      username: "Oracle",
       "g-recaptcha-response": "03AHJ_ASjnLA214KSNKFJAK12sfKASfehbmfd...",
       message: emailMessage,
     },
@@ -485,7 +485,7 @@ function sendEmail(emailMessage) {
     .done(function () {
       infoWarning(
         "Seu email foi enviado! ",
-        "Um email foi enviado para o criador de STEM, Stoltz."
+        "Um email foi enviado para o criador de Oracle, Stoltz."
       );
     })
     .fail(function (error) {
