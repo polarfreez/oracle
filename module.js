@@ -171,6 +171,7 @@ async function run(rawInput) {
   let gen = document.querySelector(`#messageIndex${messageIndex} #aiMessage`);
   let loadingCircle = document.querySelector(".maskedCircle");
   messages += fileToBeAttached + input;
+  fileToBeAttached = '';
 
   gen.innerHTML = "";
   try {
@@ -397,6 +398,7 @@ document.addEventListener("keydown", function (event) {
           attachedFileName;
         filePopUp.querySelector(".file-info").style.bottom = "0";
         filePopUp.querySelector(".file-info").style.right = "0";
+        filePopUp.querySelector(".file-info").styles.display = 'flex';
         userMessageElement.appendChild(filePopUp);
       }
 
