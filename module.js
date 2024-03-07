@@ -30,7 +30,7 @@ const marked = new Marked(
   })
 );
 
-let history = [];
+let messages = '';
 var formatedDate;
 var generating = false;
 const uploadContainer = document.querySelector('.upload-container')
@@ -53,7 +53,7 @@ function historyReader(date) {
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
       var fileContent = xhr.responseText;
-      history.push({ role: "system", content: fileContent });;
+      messages += fileContent;
     }
   };
 
@@ -169,15 +169,15 @@ async function run(rawInput) {
   const hf = new HfInference(token);
   let gen = document.querySelector(`#messageIndex${messageIndex} #aiMessage`);
   let loadingCircle = document.querySelector(".maskedCircle");
-  history += input;
+  messages += input;
 
   gen.innerHTML = "";
   try {
-    for await (const tokens of textStreamRes(hf, controller, history)) {
+    for await (const tokens of textStreamRes(hf, controller, messages)) {
       const lastToken = tokens[tokens.length - 1];
       const lastTokenFormated = lastToken.token.text;
       gen.textContent += lastTokenFormated.replace("<|im_end|>", "");
-      history += lastTokenFormated;
+      messages += lastTokenFormated;
 
       if (lastTokenFormated == "<|im_end|>") {
         gen.innerHTML = marked.parse(gen.textContent);
@@ -339,6 +339,7 @@ async function run(rawInput) {
 }
 
 $("#clearHistory").bind("click", function () {
+	messages = '';
   historyReader(formatedDate);
   cleanFileInput();
   let historyElement = document.querySelector("#history");
@@ -505,9 +506,9 @@ fileInput.addEventListener('change', (event) => {
   const reader = new FileReader();
 
   reader.onload = () => {
-    history += "<|im_start|>attached_document_by_user\n" + reader.result + "<|im_end|>";
+    messages += "<|im_start|>attached_document_by_user\n" + reader.result + "<|im_end|>";
     textFileContent = reader.result;
-    console.log('File content:', history);
+    console.log('File content:', messages);
     fileNameSpan.textContent = file.name;
     fileNameSpan.parentElement.style.display = 'flex';
     removeButton.style.display = 'flex';
