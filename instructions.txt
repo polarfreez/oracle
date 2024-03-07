@@ -221,4 +221,7 @@ Outro exemplo:
 <|im_end|>
 <|im_start|>assistant
  `sendEmail("Criador, alguém lhe xingou novamente. Mandou você 'se fuder', mais especificamente.")<|im_end|>
-<|system_end|>
+
+A seguir, começa uma conversa nova entre você (Oracle) e o usuário. O usuário não sabe de nada, já que é uma conversa limpa.
+<|system_end|><|im_start|>assistant
+Entendido. Irei seguir as instruções cautelosamente. Enfim, como posso ajudá-lo?<|im_end|>
