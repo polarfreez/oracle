@@ -163,28 +163,36 @@ var messageIndex = 0;
 
 async function run(rawInput) {
   const controller = new AbortController();
-  const token = ""; // Replace this with your actual token, if needed
+  const message = "<|im_start|>user\n{:}<|im_end|>\n\n<|im_start|>assistant\n";
+  const input = message.replace("{:}", rawInput);
+  const token = "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";
   const hf = new HfInference(token);
   let gen = document.querySelector(`#messageIndex${messageIndex} #aiMessage`);
   let loadingCircle = document.querySelector(".maskedCircle");
-
-  history.push({ role: "user", content: rawInput }); // Add the user's input to the history
+  history += input;
 
   gen.innerHTML = "";
   try {
     for await (const tokens of textStreamRes(hf, controller, history)) {
       const lastToken = tokens[tokens.length - 1];
-      gen.textContent += lastToken;
+      const lastTokenFormated = lastToken.token.text;
+      gen.textContent += lastTokenFormated.replace("<|im_end|>", "");
+      history += lastTokenFormated;
 
-      if (lastToken.startsWith("data:")) {
-        const data = JSON.parse(lastToken.slice(6));
-        if (data.choices && data.choices.length > 0) {
-          const assistantResponse = data.choices[0].delta.content;
-          if (assistantResponse) {
-            history.push({ role: "assistant", content: assistantResponse }); // Add the assistant's response to the history
-          }
-        }
-      }
+      if (lastTokenFormated == "<|im_end|>") {
+        gen.innerHTML = marked.parse(gen.textContent);
+        let historyElement = document.querySelector("#history");
+        let historyMessageGroup = document.querySelector(
+          "#messageIndex" + messageIndex
+        );
+        let userProfileElement = document.createElement("div");
+
+
+        setTimeout(() => {
+          historyElement.lastElementChild.scrollIntoView({
+            behavior: "smooth",
+          });
+        }, 0);
         // check if gen has any pre elements
         if (gen.querySelectorAll("pre").length > 0) {
           // get all the pre elements in gen
