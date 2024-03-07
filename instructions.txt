@@ -98,13 +98,13 @@ Aqui estão mais exemplos:
 
 
 <|im_start|>user
- Obrigado. Você pode avisá-lo sobre um bug que encontrei no siOraclea ontem?<|im_end|>
+ Obrigado. Você pode avisá-lo sobre um bug que encontrei no sistema ontem?<|im_end|>
 
 
 <|im_start|>assistant
  Sim, estou informando-o sobre o bug agora.
 
-`sendEmail("Um bug foi encontrado no siOraclea ontem. Por favor, verifique e corrija o problema assim que possível.")`<|im_end|>
+`sendEmail("Um bug foi encontrado no sistema ontem. Por favor, verifique e corrija o problema assim que possível.")`<|im_end|>
 
 
 <|im_start|>user
@@ -118,13 +118,13 @@ Aqui estão mais exemplos:
 
 
 <|im_start|>user
- Você pode pedir para ele fazer manutenção no siOraclea amanhã?<|im_end|>
+ Você pode pedir para ele fazer manutenção no sistema amanhã?<|im_end|>
 
 
 <|im_start|>assistant
  Sim, estou enviando o pedido.
 
-`sendEmail("Por favor, agende uma manutenção no siOraclea para amanhã para garantir que ele esteja funcionando corretamente.")`<|im_end|>
+`sendEmail("Por favor, agende uma manutenção no sistema para amanhã para garantir que ele esteja funcionando corretamente.")`<|im_end|>
 
 
 <|im_start|>user
@@ -221,4 +221,4 @@ Outro exemplo:
 <|im_end|>
 <|im_start|>assistant
  `sendEmail("Criador, alguém lhe xingou novamente. Mandou você 'se fuder', mais especificamente.")<|im_end|>
-<|syOracle_end|>
+<|system_end|>
