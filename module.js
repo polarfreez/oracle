@@ -41,6 +41,7 @@ const fileContentIcon = document.querySelector(".file-icon");
 const removeButton = document.querySelector(".remove-icon");
 
 let attachedFileName = "";
+let fileToBeAttached = '';
 
 var isFileOnChat = false;
 var textFileContent = "";
@@ -75,7 +76,7 @@ if (generating) {
 }
 
 window.onload = function () {
-  cleanFileInput();
+  clearFileInput();
 
   const timeZone = "America/Sao_Paulo"; // 'America/Sao_Paulo' corresponds to GMT-3
   const locale = "pt-BR";
@@ -169,7 +170,7 @@ async function run(rawInput) {
   const hf = new HfInference(token);
   let gen = document.querySelector(`#messageIndex${messageIndex} #aiMessage`);
   let loadingCircle = document.querySelector(".maskedCircle");
-  messages += input;
+  messages += fileToBeAttached + input;
 
   gen.innerHTML = "";
   try {
@@ -333,7 +334,7 @@ async function run(rawInput) {
 $("#clearHistory").bind("click", function () {
   messages = "";
   historyReader(formatedDate);
-  cleanFileInput();
+  clearFileInput();
   let historyElement = document.querySelector("#history");
   infoWarning("Chat resetado!", "O histórico dessa conversa foi limpo!");
   historyElement.style.animation = "fadeOut 0.5s ease-in-out forwards";
@@ -413,7 +414,7 @@ document.addEventListener("keydown", function (event) {
 
       inputElement.innerHTML = "";
       run(inputValue);
-      cleanFileInput();
+      clearFileInput();
     }
   } else if (
     isEnterPressed &&
@@ -498,8 +499,6 @@ fileInput.addEventListener("change", (event) => {
   const reader = new FileReader();
 
   reader.onload = () => {
-    messages +=
-      "<|im_start|>attached_document_by_user\n" + reader.result + "<|im_end|>";
     textFileContent = reader.result;
     console.log("File content:", messages);
     fileNameSpan.textContent = file.name;
@@ -510,6 +509,7 @@ fileInput.addEventListener("change", (event) => {
     uploadContainer.style.zIndex = "-20";
     isFileOnChat = true;
     attachedFileName = file.name;
+    fileToBeAttached = "<|im_start|>attached_document_by_user\n" + reader.result + "<|im_end|>";
 
     // Do something with the file content (history variable)
   };
@@ -518,10 +518,10 @@ fileInput.addEventListener("change", (event) => {
 });
 
 removeButton.addEventListener("click", () => {
-  cleanFileInput();
+  clearFileInput();
 });
 
-function cleanFileInput() {
+function clearFileInput() {
   fileInput.value = "";
   fileNameSpan.textContent = "";
   fileNameSpan.parentElement.style.display = "none";
@@ -530,4 +530,5 @@ function cleanFileInput() {
   fileUploadButton.style.display = "flex";
   uploadContainer.style.zIndex = "0";
   isFileOnChat = false;
+  fileToBeAttached = '';
 }
