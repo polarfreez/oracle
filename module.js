@@ -8,8 +8,8 @@ import { alertWarning } from "./index.js";
 import { errorWarning } from "./index.js";
 import { enableTTS } from "./index.js";
 import { client } from "https://cdn.jsdelivr.net/npm/@gradio/client@0.12.1/+esm";
-import { AutoTokenizer } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.15.1';
-import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.15.1';
+import { AutoTokenizer } from "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.15.1";
+import { pipeline } from "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.15.1";
 
 import { Marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 
@@ -30,20 +30,20 @@ const marked = new Marked(
   })
 );
 
-let messages = '';
+let messages = "";
 var formatedDate;
 var generating = false;
-const uploadContainer = document.querySelector('.upload-container')
-const fileInput = document.getElementById('file-upload');
-const fileNameSpan = document.querySelector('.file-name');
-const fileUploadButton = document.querySelector('.upload-button');
-const fileContentIcon = document.querySelector('.file-icon')
-const removeButton = document.querySelector('.remove-icon');
+const uploadContainer = document.querySelector(".upload-container");
+const fileInput = document.getElementById("file-upload");
+const fileNameSpan = document.querySelector(".file-name");
+const fileUploadButton = document.querySelector(".upload-button");
+const fileContentIcon = document.querySelector(".file-icon");
+const removeButton = document.querySelector(".remove-icon");
 
-let attachedFileName = '';
+let attachedFileName = "";
 
 var isFileOnChat = false;
-var textFileContent = '';
+var textFileContent = "";
 
 // A function that requests a file from the server and logs its contents
 function historyReader(date) {
@@ -60,17 +60,18 @@ function historyReader(date) {
   xhr.send();
 }
 
-if(generating){
-	        let loadingCircle = document.querySelector(".maskedCircle");
-	let blinkValue = getRandomDuration(0, 1);
+if (generating) {
+  let loadingCircle = document.querySelector(".maskedCircle");
+  let blinkValue = getRandomDuration(0, 1);
 
-	loadingCircle.style.animation = `color 0.3s linear forwards, glow 0.3s linear forwards`;
-	loadingCircle.style.opacity = blinkValue;
+  loadingCircle.style.animation = `color 0.3s linear forwards, glow 0.3s linear forwards`;
+  loadingCircle.style.opacity = blinkValue;
 
-	loadingCircle.style.transition = "all 0.1s linear";
+  loadingCircle.style.transition = "all 0.1s linear";
 } else {
-	        let loadingCircle = document.querySelector(".maskedCircle");
-	loadingCircle.style.animation  =	"reverseColor 1s linear forwards, reverseGlow 1s linear forwards, blink 1s infinite linear";
+  let loadingCircle = document.querySelector(".maskedCircle");
+  loadingCircle.style.animation =
+    "reverseColor 1s linear forwards, reverseGlow 1s linear forwards, blink 1s infinite linear";
 }
 
 window.onload = function () {
@@ -94,7 +95,6 @@ window.onload = function () {
   formatedDate = new Intl.DateTimeFormat(locale, options).format(currentDate);
 
   historyReader(formatedDate);
-
 };
 
 function getRandomDuration(value1, value2) {
@@ -187,7 +187,6 @@ async function run(rawInput) {
         );
         let userProfileElement = document.createElement("div");
 
-
         setTimeout(() => {
           historyElement.lastElementChild.scrollIntoView({
             behavior: "smooth",
@@ -259,55 +258,48 @@ async function run(rawInput) {
         }
 
         // Extract the email content using a regular expression
-	const emailContentRegex = /sendEmail\("([^"]+)"\)/g;
-	const emailContentMatches = gen.textContent.match(emailContentRegex);
-	
-	console.log(emailContentMatches);
-	
-	// Check if there are matches
-	if (emailContentMatches) {
-	  // Extract content between quotes and replace any occurrences of '\n' with actual line breaks
-	  const formatedEmailContent = emailContentMatches.map((match) =>
-	    match.match(/sendEmail\("([^"]+)"\)/g)[1].replace(/\\n/g, "\n")
-	  );
-	  console.log(formatedEmailContent);
-	
-	  // Agora você pode fazer o que quiser com o conteúdo extraído
-	  sendEmail(formatedEmailContent);
-	
-	  // Se você quiser remover as chamadas de sendEmail do texto original
-	  gen.textContent = gen.textContent.replace(emailContentRegex, "");
-	}
+        const emailContentRegex = /sendEmail\("([^"]+)"\)/g;
+        const emailContentMatches = gen.textContent.match(emailContentRegex);
 
+        console.log(emailContentMatches);
 
-	const createImageRegex = /createImage\("([^"]+)"\)/g;
-	const loadingIcon = `<div id="loading-logo">
-  <svg id="ecznbdgItRN1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 945 945" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
-<style><![CDATA[
-#ecznbdgItRN2_to {animation: ecznbdgItRN2_to__to 2000ms linear infinite normal forwards}@keyframes ecznbdgItRN2_to__to { 0% {transform: translate(472.728571px,165.153774px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 20% {transform: translate(472.728571px,165.153774px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 40% {transform: translate(472.728571px,165.153774px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 60% {transform: translate(705.122636px,568.401056px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 80% {transform: translate(239.877368px,568.401059px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 100% {transform: translate(472.730753px,165.154998px)}} #ecznbdgItRN2_tr {animation: ecznbdgItRN2_tr__tr 2000ms linear infinite normal forwards}@keyframes ecznbdgItRN2_tr__tr { 0% {transform: rotate(0deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 20% {transform: rotate(0deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 40% {transform: rotate(0deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 60% {transform: rotate(-60deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 80% {transform: rotate(-120deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 100% {transform: rotate(-180deg)}} #ecznbdgItRN3_to {animation: ecznbdgItRN3_to__to 2000ms linear infinite normal forwards}@keyframes ecznbdgItRN3_to__to { 0% {transform: translate(238.674017px,568.40546px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 20% {transform: translate(238.674017px,568.40546px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 40% {transform: translate(472.408703px,165.316756px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 60% {transform: translate(706.136125px,568.40089px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 80% {transform: translate(238.675613px,568.40453px)} 100% {transform: translate(238.675613px,568.40453px)}} #ecznbdgItRN3_tr {animation: ecznbdgItRN3_tr__tr 2000ms linear infinite normal forwards}@keyframes ecznbdgItRN3_tr__tr { 0% {transform: rotate(0deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 20% {transform: rotate(0deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 40% {transform: rotate(-60deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 60% {transform: rotate(-120deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 80% {transform: rotate(-180deg)} 100% {transform: rotate(-180deg)}} #ecznbdgItRN4_to {animation: ecznbdgItRN4_to__to 2000ms linear infinite normal forwards}@keyframes ecznbdgItRN4_to__to { 0% {transform: translate(511.220095px,856.404623px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 20% {transform: translate(390.633543px,881.208094px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 40% {transform: translate(819.375166px,189.95456px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 60% {transform: translate(901.05139px,280.398762px)} 100% {transform: translate(901.05139px,280.398762px)}} #ecznbdgItRN4_tr {animation: ecznbdgItRN4_tr__tr 2000ms linear infinite normal forwards}@keyframes ecznbdgItRN4_tr__tr { 0% {transform: rotate(0deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 20% {transform: rotate(-60deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 40% {transform: rotate(-120deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 60% {transform: rotate(-180deg)} 100% {transform: rotate(-180deg)}}
-]]></style>
-<g id="ecznbdgItRN2_to" transform="translate(472.728571,165.153774)"><g id="ecznbdgItRN2_tr" transform="rotate(0)"><path d="M804.33,117.8l-74.11,74.19q-.95.96-2.39.96h-511.35c-.922092.00024-1.80348-.363108-2.45-1.01l-73.89-74.03c-.754098-.756046-.758568-1.976215-.01-2.73l73.88-74.12c.780946-.787328,1.842947-1.230128,2.95-1.23l510.35-.01c1.157916-.000156,2.270234.46421,3.09,1.29q34.75,34.72,72.07,72.17q1.19,1.2,2,2.24c.533042.687158.473108,1.66322-.14,2.28Z" transform="translate(-472.202316,-116.385002)" fill="#fff"/></g></g><g id="ecznbdgItRN3_to" transform="translate(238.674017,568.40546)"><g id="ecznbdgItRN3_tr" transform="rotate(0)"><path d="M300.14,779.13C214.91,632.33,129.82,485.44,44.69,338.58q-1.07-1.85-.96-3.45.13-1.77.61-3.56q12.9-48.15,26.32-98.62c.205483-.781646.917387-1.324834,1.73-1.32q1.15.01,2.31.32q49.89,13.37,99.26,26.45c1.107878.294561,2.056493,1.016802,2.64,2.01Q304.34,480.69,432.38,701.59q1.2,2.07.58,4.38-12.57,46.99-25.19,94.27-.9,3.36-1.82,6.36-.41,1.32-1.76.97L302.12,780.64c-.831518-.217033-1.544214-.760554-1.98-1.51Z" transform="translate(-238.445469,-519.636688)" fill="#fff"/></g></g><g id="ecznbdgItRN4_to" transform="translate(511.220095,856.404623)"><g id="ecznbdgItRN4_tr" transform="rotate(0)"><path d="M512.51,700.18c84.66-145.9,169.53-292.5,254.55-438.66q1.36-2.33,3.75-2.97q50.2-13.34,100.41-26.7c.551979-.147061,1.139522-.069438,1.632949.215737s.852172.754455.997051,1.304263l26.83,100.77c.288195,1.075698.137053,2.220056-.42,3.18L643.73,779.61q-.59,1.02-1.74,1.32L540.61,807.67q-2.03.54-2.57-1.49-13.68-51.26-26.85-100.56c-.6-2.26.24-3.59,1.32-5.44Z" transform="translate(-510.991547,-807.781982)" fill="#fff"/></g></g></svg>
-</div>`;
-	
-	const createImageMatches = gen.innerText.match(createImageRegex);
-	
-	if (createImageMatches) {
-	  const formatedImagePrompt = createImageMatches.map((match) =>
-	    match.match(/createImage\("([^"]+)"\)/)[1].replace(/\\n/g, "\n")
-	  );
-	  console.log(formatedImagePrompt);
-		// Display the loading icon
-		gen.innerHTML = gen.innerHTML.replace(createImageRegex, loadingIcon);
-	
-	  const imagePath = await createImage(formatedImagePrompt);
-		
-	  // Remove the loading icon and insert the actual image
-	  const imgElement = document.createElement('img');
-		gen.querySelector("#loading-logo").remove();
-	  imgElement.src = imagePath;
-	  imgElement.alt = 'AI Image';
-	  gen.firstChild.replaceWith(imgElement);
-	}
+        // Check if there are matches
+        if (emailContentMatches) {
+          // Extract content between quotes and replace any occurrences of '\n' with actual line breaks
+          const formatedEmailContent = emailContentMatches.map((match) =>
+            match.match(/sendEmail\("([^"]+)"\)/g)[1].replace(/\\n/g, "\n")
+          );
+          console.log(formatedEmailContent);
+
+          // Agora você pode fazer o que quiser com o conteúdo extraído
+          sendEmail(formatedEmailContent);
+
+          // Se você quiser remover as chamadas de sendEmail do texto original
+          gen.textContent = gen.textContent.replace(emailContentRegex, "");
+        }
+
+        const createImageRegex = /createImage\("([^"]+)"\)/g;
+        const loadingIcon = `<div id="loading-logo"><svg id="ecznbdgItRN1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 945 945" shape-rendering="geometricPrecision" text-rendering="geometricPrecision"><style><![CDATA[#ecznbdgItRN2_to {animation: ecznbdgItRN2_to__to 2000ms linear infinite normal forwards}@keyframes ecznbdgItRN2_to__to { 0% {transform: translate(472.728571px,165.153774px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 20% {transform: translate(472.728571px,165.153774px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 40% {transform: translate(472.728571px,165.153774px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 60% {transform: translate(705.122636px,568.401056px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 80% {transform: translate(239.877368px,568.401059px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 100% {transform: translate(472.730753px,165.154998px)}} #ecznbdgItRN2_tr {animation: ecznbdgItRN2_tr__tr 2000ms linear infinite normal forwards}@keyframes ecznbdgItRN2_tr__tr { 0% {transform: rotate(0deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 20% {transform: rotate(0deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 40% {transform: rotate(0deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 60% {transform: rotate(-60deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 80% {transform: rotate(-120deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 100% {transform: rotate(-180deg)}} #ecznbdgItRN3_to {animation: ecznbdgItRN3_to__to 2000ms linear infinite normal forwards}@keyframes ecznbdgItRN3_to__to { 0% {transform: translate(238.674017px,568.40546px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 20% {transform: translate(238.674017px,568.40546px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 40% {transform: translate(472.408703px,165.316756px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 60% {transform: translate(706.136125px,568.40089px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 80% {transform: translate(238.675613px,568.40453px)} 100% {transform: translate(238.675613px,568.40453px)}} #ecznbdgItRN3_tr {animation: ecznbdgItRN3_tr__tr 2000ms linear infinite normal forwards}@keyframes ecznbdgItRN3_tr__tr { 0% {transform: rotate(0deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 20% {transform: rotate(0deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 40% {transform: rotate(-60deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 60% {transform: rotate(-120deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 80% {transform: rotate(-180deg)} 100% {transform: rotate(-180deg)}} #ecznbdgItRN4_to {animation: ecznbdgItRN4_to__to 2000ms linear infinite normal forwards}@keyframes ecznbdgItRN4_to__to { 0% {transform: translate(511.220095px,856.404623px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 20% {transform: translate(390.633543px,881.208094px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 40% {transform: translate(819.375166px,189.95456px);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 60% {transform: translate(901.05139px,280.398762px)} 100% {transform: translate(901.05139px,280.398762px)}} #ecznbdgItRN4_tr {animation: ecznbdgItRN4_tr__tr 2000ms linear infinite normal forwards}@keyframes ecznbdgItRN4_tr__tr { 0% {transform: rotate(0deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 20% {transform: rotate(-60deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 40% {transform: rotate(-120deg);animation-timing-function: cubic-bezier(0.785,0.135,0.15,0.86)} 60% {transform: rotate(-180deg)} 100% {transform: rotate(-180deg)}}]]></style><g id="ecznbdgItRN2_to" transform="translate(472.728571,165.153774)"><g id="ecznbdgItRN2_tr" transform="rotate(0)"><path d="M804.33,117.8l-74.11,74.19q-.95.96-2.39.96h-511.35c-.922092.00024-1.80348-.363108-2.45-1.01l-73.89-74.03c-.754098-.756046-.758568-1.976215-.01-2.73l73.88-74.12c.780946-.787328,1.842947-1.230128,2.95-1.23l510.35-.01c1.157916-.000156,2.270234.46421,3.09,1.29q34.75,34.72,72.07,72.17q1.19,1.2,2,2.24c.533042.687158.473108,1.66322-.14,2.28Z" transform="translate(-472.202316,-116.385002)" fill="#fff"/></g></g><g id="ecznbdgItRN3_to" transform="translate(238.674017,568.40546)"><g id="ecznbdgItRN3_tr" transform="rotate(0)"><path d="M300.14,779.13C214.91,632.33,129.82,485.44,44.69,338.58q-1.07-1.85-.96-3.45.13-1.77.61-3.56q12.9-48.15,26.32-98.62c.205483-.781646.917387-1.324834,1.73-1.32q1.15.01,2.31.32q49.89,13.37,99.26,26.45c1.107878.294561,2.056493,1.016802,2.64,2.01Q304.34,480.69,432.38,701.59q1.2,2.07.58,4.38-12.57,46.99-25.19,94.27-.9,3.36-1.82,6.36-.41,1.32-1.76.97L302.12,780.64c-.831518-.217033-1.544214-.760554-1.98-1.51Z" transform="translate(-238.445469,-519.636688)" fill="#fff"/></g></g><g id="ecznbdgItRN4_to" transform="translate(511.220095,856.404623)"><g id="ecznbdgItRN4_tr" transform="rotate(0)"><path d="M512.51,700.18c84.66-145.9,169.53-292.5,254.55-438.66q1.36-2.33,3.75-2.97q50.2-13.34,100.41-26.7c.551979-.147061,1.139522-.069438,1.632949.215737s.852172.754455.997051,1.304263l26.83,100.77c.288195,1.075698.137053,2.220056-.42,3.18L643.73,779.61q-.59,1.02-1.74,1.32L540.61,807.67q-2.03.54-2.57-1.49-13.68-51.26-26.85-100.56c-.6-2.26.24-3.59,1.32-5.44Z" transform="translate(-510.991547,-807.781982)" fill="#fff"/></g></g></svg></div>`;
+
+        const createImageMatches = gen.innerText.match(createImageRegex);
+
+        if (createImageMatches) {
+          const formatedImagePrompt = createImageMatches.map((match) =>
+            match.match(/createImage\("([^"]+)"\)/)[1].replace(/\\n/g, "\n")
+          );
+          console.log(formatedImagePrompt);
+          // Display the loading icon
+          gen.innerHTML = gen.innerHTML.replace(createImageRegex, loadingIcon);
+
+          const imagePath = await createImage(formatedImagePrompt);
+
+          // Remove the loading icon and insert the actual image
+          const imgElement = document.createElement("img");
+          gen.querySelector("#loading-logo").remove();
+          imgElement.src = imagePath;
+          imgElement.alt = "AI Image";
+          gen.firstChild.replaceWith(imgElement);
+        }
 
         setTimeout(() => {
           fadeInOut(gen, "fadeIn", "flex");
@@ -316,22 +308,22 @@ async function run(rawInput) {
         messageIndex++;
       }
 
-        generating = false;
+      generating = false;
 
-        // TTS part
-        if (enableTTS) {
-          playParagraphs(gen);
-        } else {
-          loadingCircle.style.animation =
-            "reverseColor 1s linear forwards, reverseGlow 1s linear forwards, blink 1s infinite linear";
-        }
+      // TTS part
+      if (enableTTS) {
+        playParagraphs(gen);
+      } else {
+        loadingCircle.style.animation =
+          "reverseColor 1s linear forwards, reverseGlow 1s linear forwards, blink 1s infinite linear";
+      }
 
-        setTimeout(() => {
-          fadeInOut(gen, "fadeIn", "flex");
-        }, 500);
+      setTimeout(() => {
+        fadeInOut(gen, "fadeIn", "flex");
+      }, 500);
 
-        messageIndex++;
-      
+      messageIndex++;
+    }
   } catch (e) {
     errorWarning("Um erro ocorreu!", e);
     console.log(e);
@@ -339,7 +331,7 @@ async function run(rawInput) {
 }
 
 $("#clearHistory").bind("click", function () {
-	messages = '';
+  messages = "";
   historyReader(formatedDate);
   cleanFileInput();
   let historyElement = document.querySelector("#history");
@@ -379,13 +371,12 @@ document.addEventListener("keydown", function (event) {
       let userProfileElement = document.createElement("div");
       let historyElement = document.querySelector("#history");
       let aiMessageElement = document.createElement("div");
-        let aiProfileElement = document.createElement("div");
-
+      let aiProfileElement = document.createElement("div");
 
       userProfileElement.id = "userProfile";
       userMessageElement.id = "userMessage";
-              aiProfileElement.id = "aiProfile";
-                    aiMessageElement.id = "aiMessage";
+      aiProfileElement.id = "aiProfile";
+      aiMessageElement.id = "aiMessage";
       userMessageElement.innerHTML = marked.parse(
         inputElement.innerText.trim()
       );
@@ -396,19 +387,20 @@ document.addEventListener("keydown", function (event) {
       historyMessageGroup.appendChild(userMessageElement);
       historyMessageGroup.appendChild(userProfileElement);
 
-        if(isFileOnChat){
-          const filePopUp = document.createElement("div");
-          filePopUp.id = "file-pop-up";
+      if (isFileOnChat) {
+        const filePopUp = document.createElement("div");
+        filePopUp.id = "file-pop-up";
 
-          filePopUp.innerHTML = `<div class="file-info"><svg class="file-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/></svg><span class="file-name-attached"></span></div>`;
-          filePopUp.querySelector(".file-name-attached").textContent = attachedFileName;
-          filePopUp.querySelector(".file-info").style.bottom = '0';
-          filePopUp.querySelector(".file-info").style.right = '0';
-          userMessageElement.appendChild(filePopUp);
-        }
+        filePopUp.innerHTML = `<div class="file-info"><svg class="file-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/></svg><span class="file-name-attached"></span></div>`;
+        filePopUp.querySelector(".file-name-attached").textContent =
+          attachedFileName;
+        filePopUp.querySelector(".file-info").style.bottom = "0";
+        filePopUp.querySelector(".file-info").style.right = "0";
+        userMessageElement.appendChild(filePopUp);
+      }
 
-        historyMessageGroup.appendChild(aiMessageElement);
-        historyMessageGroup.appendChild(aiProfileElement);
+      historyMessageGroup.appendChild(aiMessageElement);
+      historyMessageGroup.appendChild(aiProfileElement);
       historyElement.appendChild(historyMessageGroup);
       setTimeout(() => {
         historyElement.lastElementChild.scrollIntoView({ behavior: "smooth" });
@@ -449,25 +441,25 @@ function fadeInOut(DOMElement, fadeType, displayType) {
 
 async function createImage(prompt) {
   try {
-	const app = await client("ddosxd/stable-cascade");
-	const result = await app.predict("/run", [		
-					prompt, // string  in 'Prompt' Textbox component		
-					"verybadimagenegative_v1.3, ng_deepnegative_v1_75t, (ugly face:0.8),cross-eyed,sketches, (worst quality:2), (low quality:2), (normal quality:2), lowres, normal quality, ((monochrome)), ((grayscale)), skin spots, acnes, skin blemishes, bad anatomy, DeepNegative, facing away, tilted head, {Multiple people}, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worstquality, low quality, normal quality, jpegartifacts, signature, watermark, username, blurry, bad feet, cropped, poorly drawn hands, poorly drawn face, mutation, deformed, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, extra fingers, fewer digits, extra limbs, extra arms,extra legs, malformed limbs, fused fingers, too many fingers, long neck, cross-eyed,mutated hands, polar lowres, bad body, bad proportions, gross proportions, text, error, missing fingers, missing arms, missing legs, extra digit, extra arms, extra leg, extra foot, ((repeating hair))", // string  in 'Negative prompt' Textbox component		
-					0, // number (numeric value between 0 and 2147483647) in 'Seed' Slider component		
-					1024, // number (numeric value between 1024 and 1536) in 'Width' Slider component		
-					1024, // number (numeric value between 1024 and 1536) in 'Height' Slider component		
-					20, // number (numeric value between 10 and 30) in 'Prior Inference Steps' Slider component		
-					4, // number (numeric value between 0 and 20) in 'Prior Guidance Scale' Slider component		
-					10, // number (numeric value between 4 and 12) in 'Decoder Inference Steps' Slider component		
-					0, // number (numeric value between 0 and 0) in 'Decoder Guidance Scale' Slider component		
-					1, // number (numeric value between 1 and 2) in 'Number of Images' Slider component
-		]);
+    const app = await client("ddosxd/stable-cascade");
+    const result = await app.predict("/run", [
+      prompt, // string  in 'Prompt' Textbox component
+      "verybadimagenegative_v1.3, ng_deepnegative_v1_75t, (ugly face:0.8),cross-eyed,sketches, (worst quality:2), (low quality:2), (normal quality:2), lowres, normal quality, ((monochrome)), ((grayscale)), skin spots, acnes, skin blemishes, bad anatomy, DeepNegative, facing away, tilted head, {Multiple people}, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worstquality, low quality, normal quality, jpegartifacts, signature, watermark, username, blurry, bad feet, cropped, poorly drawn hands, poorly drawn face, mutation, deformed, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, extra fingers, fewer digits, extra limbs, extra arms,extra legs, malformed limbs, fused fingers, too many fingers, long neck, cross-eyed,mutated hands, polar lowres, bad body, bad proportions, gross proportions, text, error, missing fingers, missing arms, missing legs, extra digit, extra arms, extra leg, extra foot, ((repeating hair))", // string  in 'Negative prompt' Textbox component
+      0, // number (numeric value between 0 and 2147483647) in 'Seed' Slider component
+      1024, // number (numeric value between 1024 and 1536) in 'Width' Slider component
+      1024, // number (numeric value between 1024 and 1536) in 'Height' Slider component
+      20, // number (numeric value between 10 and 30) in 'Prior Inference Steps' Slider component
+      4, // number (numeric value between 0 and 20) in 'Prior Guidance Scale' Slider component
+      10, // number (numeric value between 4 and 12) in 'Decoder Inference Steps' Slider component
+      0, // number (numeric value between 0 and 0) in 'Decoder Guidance Scale' Slider component
+      1, // number (numeric value between 1 and 2) in 'Number of Images' Slider component
+    ]);
 
     console.log(result.data);
 
     return result.data[0].url;
   } catch (error) {
-		errorWarning("Error in createImage function: ", error);
+    errorWarning("Error in createImage function: ", error);
     console.error("Error in createImage function:", error);
     return null;
   }
@@ -501,40 +493,41 @@ function sendEmail(emailMessage) {
     });
 }
 
-fileInput.addEventListener('change', (event) => {
+fileInput.addEventListener("change", (event) => {
   const file = event.target.files[0];
   const reader = new FileReader();
 
   reader.onload = () => {
-    messages += "<|im_start|>attached_document_by_user\n" + reader.result + "<|im_end|>";
+    messages +=
+      "<|im_start|>attached_document_by_user\n" + reader.result + "<|im_end|>";
     textFileContent = reader.result;
-    console.log('File content:', messages);
+    console.log("File content:", messages);
     fileNameSpan.textContent = file.name;
-    fileNameSpan.parentElement.style.display = 'flex';
-    removeButton.style.display = 'flex';
-    fileContentIcon.style.display = 'flex';
-    fileUploadButton.style.display = 'none';
-    uploadContainer.style.zIndex = '-20';
+    fileNameSpan.parentElement.style.display = "flex";
+    removeButton.style.display = "flex";
+    fileContentIcon.style.display = "flex";
+    fileUploadButton.style.display = "none";
+    uploadContainer.style.zIndex = "-20";
     isFileOnChat = true;
     attachedFileName = file.name;
-    
+
     // Do something with the file content (history variable)
   };
 
   reader.readAsText(file);
 });
 
-removeButton.addEventListener('click', () => {
+removeButton.addEventListener("click", () => {
   cleanFileInput();
 });
 
-function cleanFileInput(){
-  fileInput.value = '';
-  fileNameSpan.textContent = '';
-  fileNameSpan.parentElement.style.display = 'none';
-  removeButton.style.display = 'none';
-  fileContentIcon.style.display = 'none';
-  fileUploadButton.style.display = 'flex';
-  uploadContainer.style.zIndex = '0';
+function cleanFileInput() {
+  fileInput.value = "";
+  fileNameSpan.textContent = "";
+  fileNameSpan.parentElement.style.display = "none";
+  removeButton.style.display = "none";
+  fileContentIcon.style.display = "none";
+  fileUploadButton.style.display = "flex";
+  uploadContainer.style.zIndex = "0";
   isFileOnChat = false;
 }
