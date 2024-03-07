@@ -125,8 +125,8 @@ strong,
   transition: all 0.5s ease;
   pointer-events: auto !important;
   position: fixed;
-  right: 4;
-  bottom: 4;
+  right: 4px;
+  bottom: 3px;
   z-index: 21;
 }
 
@@ -970,9 +970,8 @@ pre {
 
 .upload-container {
   position: fixed;
-  bottom: 4px;
+  bottom: 3px;
   right: 48px;
-	display: none;
 }
 
 .upload-button {
@@ -1006,7 +1005,7 @@ pre {
 }
 
 .file-info {
-  display: flex;
+  display: none;
   background: #232e3f;
   padding: 10px;
   position: relative;
