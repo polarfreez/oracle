@@ -768,12 +768,7 @@ li {
   content: attr(placeholder);
   color: #999;
   position: relative;
-  top: 0px;
-  /*
-    For IE only, do this:
-    position: absolute;
-    top: 10px;
-    */
+  top: 1px;
   cursor: text;
 }
 
