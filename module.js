@@ -451,7 +451,7 @@ async function createImage(prompt) {
   try {
     const app = await client("AP123/Playground-v2.5");
     const result = await app.predict("/generate_image", [		
-    				"Hello!!", // string  in 'Enter your image prompt' Textbox component		
+    				prompt, // string  in 'Enter your image prompt' Textbox component		
     			  75, // number (numeric value between 1 and 75) in 'Number of Inference Steps' Slider component		
     				7.5, // number (numeric value between 1 and 10) in 'Guidance Scale' Slider component
     	]);
