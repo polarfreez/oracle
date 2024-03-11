@@ -458,7 +458,7 @@ async function createImage(prompt) {
 
     console.log(result.data);
 
-    return result.data[0].url;
+    return "https://playgroundai-playground-v2-5.hf.space/--replicas/99tjk/" + result.data[0].image.path;
   } catch (error) {
     errorWarning("Error in createImage function: ", error);
     console.error("Error in createImage function:", error);
@@ -486,7 +486,7 @@ function sendEmail(emailMessage) {
     .done(function () {
       infoWarning(
         "Seu email foi enviado! ",
-        "Um email foi enviado para o criador de Oracle, Stoltz."
+        "Um email foi enviado para o criador de Oracle, Polar."
       );
     })
     .fail(function (error) {
