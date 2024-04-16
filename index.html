@@ -3,7 +3,7 @@
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Stella</title>
+      <title>Oracle</title>
       <script src="https://cdn.tailwindcss.com"></script>
       <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/moo/moo.min.js"></script>
@@ -17,6 +17,7 @@
       <script src="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.js"></script>
       <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
       <script src='https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js'></script>
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
       <!-- polyfill for firefox + import maps -->
       <script src="https://unpkg.com/es-module-shims@1.7.0/dist/es-module-shims.js"></script>
          <script type="importmap">
@@ -40,6 +41,10 @@
          rel="stylesheet"
          href="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.css"
          />
+      <link
+         rel="stylesheet"
+         href="/css/scrollbar.css"
+         />
       <link rel="icon" type="image/svg+xml" href="/images/chat.svg" />
       <link rel="stylesheet" href="./index.css" />
    </head>
@@ -49,6 +54,7 @@
       <img src="./images/back.svg" class="back-icon" alt="Voltar" />
       Voltar
       </a>
+      
       <div id="messageContainer"></div>
       <div class="loading-container">
          <!-- Loading animation container -->
@@ -76,7 +82,7 @@
                   animation: 0.5s ease-in-out 0s 1 normal forwards running fadeIn;
                   "
                   >
-                  <p>Olá, eu sou Stella. Como posso ajudar?</p>
+                  <p>Olá, usuário.</p>
                </div>
                <div id="aiProfile"></div>
             </div>
@@ -159,21 +165,40 @@
             <a class="btn_" id="confirmPassword">Confirmar</a>
          </div>
       </div>
-      <div class="input-container">
-         <button id="submit"
-            >
-<svg xmlns="http://www.w3.org/2000/svg" fill="#ffffff" width="800px" height="800px" viewBox="-3 -3 30 30" id="send" data-name="Flat Color" class="icon flat-color"><g id="deeditor_bgCarrier" stroke-width="0">
-  <rect id="dee_c_e" x="-3" y="-3" width="30" height="30" rx="38.4" fill="#2a374a" strokewidth="0"/>
-</g><path id="primary" d="M21.66,12a2,2,0,0,1-1.14,1.81L5.87,20.75A2.08,2.08,0,0,1,5,21a2,2,0,0,1-1.82-2.82L5.46,13l.45-1-.45-1L3.18,5.87A2,2,0,0,1,5.87,3.25l14.65,6.94A2,2,0,0,1,21.66,12Z" style="fill: rgb(255, 255, 255);"/><path id="secondary" d="M12,12a1,1,0,0,1-1,1H5.46l.45-1-.45-1H11A1,1,0,0,1,12,12Z" style="fill: #8969CD;"/></svg>
-         </button>
+      <div class="input-container">         
          <div
             contenteditable="true"
             enterkeyhint="send"
             id="input"
             placeholder="Pergunte me qualquer coisa"
             ></div>
+<!-- create a div element to contain the upload button and the progress bar -->
+<div class="upload-container">
+   <!-- create a hidden file input element -->
+   <input type="file" id="file-upload" accept="text/*" hidden>
+   <!-- create a label element to act as the upload button -->
+   <label for="file-upload">
+     <div class="upload-button">
+       <!-- create an svg element to display the upload icon -->
+       <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" aria-hidden="true">
+         <path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z"/>
+       </svg>
+     </div>
+   </label>
+   <div class="file-info">
+      <svg class="file-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/></svg>
+     <span class="file-name"></span>
+     <button class="remove-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m480-424 116 116q11 11 28 11t28-11q11-11 11-28t-11-28L536-480l116-116q11-11 11-28t-11-28q-11-11-28-11t-28 11L480-536 364-652q-11-11-28-11t-28 11q-11 11-11 28t11 28l116 116-116 116q-11 11-11 28t11 28q11 11 28 11t28-11l116-116Zm0 344q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg></button>
+   </div>
+ </div>
+ 
+         <button id="submit">
+<svg xmlns="http://www.w3.org/2000/svg" fill="#ffffff" width="800px" height="800px" viewBox="-3 -3 30 30" id="send" data-name="Flat Color" class="icon flat-color"><g id="deeditor_bgCarrier" stroke-width="0">
+  <rect id="dee_c_e" x="-3" y="-3" width="30" height="30" rx="38.4" fill="#2a374a" strokewidth="0"/>
+</g><path id="primary" d="M21.66,12a2,2,0,0,1-1.14,1.81L5.87,20.75A2.08,2.08,0,0,1,5,21a2,2,0,0,1-1.82-2.82L5.46,13l.45-1-.45-1L3.18,5.87A2,2,0,0,1,5.87,3.25l14.65,6.94A2,2,0,0,1,21.66,12Z" style="fill: rgb(255, 255, 255);"/><path id="secondary" d="M12,12a1,1,0,0,1-1,1H5.46l.45-1-.45-1H11A1,1,0,0,1,12,12Z" style="fill: #8969CD;"/></svg>
+         </button>
       </div>
       <script type="module" src="./index.js"></script>
-      <script type="module" src="module.js"></script>
+      <script crossorigin='anonymous' type="module" src="module.js"></script>
    </body>
 </html>

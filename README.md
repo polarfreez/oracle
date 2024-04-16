@@ -1,2 +1,2 @@
-# stella
+# STEM
 nada (por enquanto)

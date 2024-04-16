@@ -2,7 +2,7 @@ export let enableTTS = false;
 
 // Marked
 window.onload = function(){
-  const chat_message = document.querySelector("#message");
+  const chat_message = document.querySelector("#aiMessage");
   chat_message.innerHTML = marked.parse(chat_message.textContent);
 
   let historyMessageGroup = document.createElement("div");
