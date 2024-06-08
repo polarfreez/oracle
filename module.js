@@ -227,6 +227,8 @@ async function run(rawInput) {
             button.appendChild(svg);
             // append the button to the pre element
             pre.appendChild(button);
+            generating = false;
+            
             // add a click event listener to the button
             button.addEventListener("click", function () {
               // get the text content of the pre element
@@ -249,7 +251,7 @@ async function run(rawInput) {
           }
         }
 
-        generating = false;
+
 
         // TTS part
         if (enableTTS) {
