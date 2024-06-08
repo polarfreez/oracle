@@ -166,7 +166,7 @@ async function run(rawInput) {
   const controller = new AbortController();
   const message = "<|im_start|>user\n{:}<|im_end|>\n\n<|im_start|>assistant\n";
   const input = message.replace("{:}", rawInput);
-  const token = "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";
+  const token = "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";
   const hf = new HfInference(token);
   let gen = document.querySelector(`#messageIndex${messageIndex} #aiMessage`);
   let loadingCircle = document.querySelector(".maskedCircle");
