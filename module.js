@@ -451,12 +451,15 @@ function fadeInOut(DOMElement, fadeType, displayType) {
 
 async function createImage(prompt) {
   try {
-    const app = await client("AP123/Playground-v2.5");
-    const result = await app.predict("/generate_image", [		
-    				prompt, // string  in 'Enter your image prompt' Textbox component		
-    			  75, // number (numeric value between 1 and 75) in 'Number of Inference Steps' Slider component		
-    				7.5, // number (numeric value between 1 and 10) in 'Guidance Scale' Slider component
-    	]);
+    const client = await Client.connect("black-forest-labs/FLUX.1-schnell");
+    const result = await client.predict("/infer", { 		
+    		prompt: prompt, 		
+    		seed: 0, 		
+    		randomize_seed: true, 		
+    		width: 1024, 		
+    		height: 1024, 		
+    		num_inference_steps: 1, 
+    });
 
     console.log(result.data);
 
