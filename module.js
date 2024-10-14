@@ -449,17 +449,16 @@ function fadeInOut(DOMElement, fadeType, displayType) {
 
 async function createImage(prompt) {
   try {
-    const client = await Client.connect("black-forest-labs/FLUX.1-schnell");
+    const client = await Client.connect("rafaaa2105/flux-ghibsky-illustration");
     const result = await client.predict("/infer", { 		
     		prompt: prompt, 		
     		seed: 0, 		
     		randomize_seed: true, 		
     		width: 1024, 		
     		height: 1024, 		
-    		num_inference_steps: 1, 
+    		guidance_scale: 3.5, 		
+    		num_inference_steps: 28, 
     });
-
-    console.log(result.data);
 
     return result.data[0].url;
   } catch (error) {
